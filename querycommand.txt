@@ -1,0 +1,20 @@
+ show dbs
+ use students
+ db.students.insertOne({ "name": "vimal", "mob": 1111 })
+ db.students.find()
+ db.students.find().pretty()
+ db.students.insertOne({ "name": "abhi", "mob": 22222 , _id: 1})
+ db.students.deleteOne({name: "vimal"})
+ db.students.updateOne({name: "abhi"} , { $set: {marker: "delete"} } )
+ db.students.insertOne({ "name": "vimal", "mob": 1111 })
+ db.students.updateMany({} , { $set: { marker: "toDelete" } } )
+ db.students.deleteMany({marker: "toDelete"})
+ db.students.insertMany([ { name: 'abhi', mob: 22222} ,{  name: 'vimal', mob: 3333 } ])
+ db.students.find({ mob: 22222})
+ 
+ db.students.find({ mob: { $gt: 333 } })
+ db.students.findOne({ mob: { $gt: 333 } })
+ db.students.updateOne({ _id: ObjectId("62e42501f13bf4b82f9f80f2")} , {$set: {allowed: true}}  )
+ db.students.update({ _id: ObjectId("62e42501f13bf4b82f9f80f2")} , {$set: {allowed: false}}  )
+ 
+ 
