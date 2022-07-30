@@ -18,3 +18,35 @@
  db.students.update({ _id: ObjectId("62e42501f13bf4b82f9f80f2")} , {$set: {allowed: false}}  )
  
  
+db.students.replaceOne({ _id: ObjectId("62e42501f13bf4b82f9f80f2")} , { datanew: "allreplace"}   )
+
+# show all data without giving cursor
+db.students.find().pretty().toArray()
+
+# iterate cursor reference by foreach using JS anonymous function
+db.students.find().forEach( (data) => { printjson(data)})
+
+# projection
+db.students.find({} , {mob: 1} )
+db.students.find({} , {name: 1 , _id: 0} )
+
+# embedded or nested document
+db.students.updateMany({}, { $set: { "status": { description: "great" , markname: "test" }  } })
+
+db.students.updateOne({ name: "abhi"} , { $set: {hobbies: ["sports" , "cooking"] } })
+
+db.students.findOne({ name: "abhi" }).hobbies
+db.students.find({ hobbies: "sports" })
+db.students.findOne({ hobbies: "sports" }).mob
+ db.students.find({ "status.description": "great" })
+ 
+ 
+ db.stats()
+ console.log("hi")
+ 
+ students> db.students.drop()
+ students> db.dropDatabase()
+ 
+ 
+
+
