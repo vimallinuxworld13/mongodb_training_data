@@ -1,5 +1,33 @@
 # mongoimport persons.json  -d  lwperson -c persons --jsonArray
 
+lwperson> db.persons.find({ "dob.age": 23  })
+
+lwperson> db.persons.find({ "dob.age":   { $gt:  23 }   })
+
+lwperson> db.persons.find({ "dob.age":  { $in:  [23,52,67]  }   })
+
+
+lwperson> db.persons.find({ "dob.age":  { $nin:  [23,52,67]  }   })
+
+lwperson> db.persons.find({ "dob.age":  { $gt: 40 }  ,   "registered.age": {  $lt: 2 }  })
+
+lwperson> db.persons.find( { $and: [ { "dob.age":  { $gt: 40 }},  { "registered.age": {  $lt: 2 } } ]  } )
+
+
+lwperson> db.persons.find( { $or: [ { "dob.age":  { $gt: 40 }},  { "registered.age": {  $lt: 2 } } ]  } )
+
+lwperson> db.persons.aggregate([ { $match: { gender: 'male' } }])
+
+
+
+
+
+
+
+
+
+
+
 analytics> db.persons.aggregate([ { $match: { gender: "female" } }])
 
 
