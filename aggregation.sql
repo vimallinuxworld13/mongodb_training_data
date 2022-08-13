@@ -1,3 +1,5 @@
+# mongoimport persons.json  -d  lwperson -c persons --jsonArray
+
 analytics> db.persons.aggregate([ { $match: { gender: "female" } }])
 
 
@@ -125,6 +127,112 @@ db.persons.aggregate([
     { $group: { _id: { birthYear: { $isoWeekYear: "$birthdate" } }, numPersons: { $sum: 1 } } },
     { $sort: { numPersons: -1 } }
   ]).pretty();
+
+
+
+
+db.persons.aggregate(
+[
+    { $match: { gender: 'male' } },
+
+    { $project: { 
+        _id: 0, 
+        phone: 1, 
+        email: 1, 
+        "name.first": 1 , 
+        "name.last": 1,
+        "mycompanyname":  {  $concat:  [ "Linux" , " World" ] },
+        "myname": "vimal daga"
+        } 
+    }
+
+]
+)
+
+
+
+
+
+
+db.persons.aggregate(
+[
+    { $match: { gender: 'male' } },
+
+    { $project:  { 
+        phone: 1, 
+        email:1, 
+        name:1 , 
+        _id: 0,
+        birthday:  { $toDate:  "$dob.date" }
+    }
+},
+
+    { $project: { 
+        birthday: 1,
+        tellmebirthyear:  {  $isoWeekYear:  "$birthday" },
+        phone: 1, 
+        email: 1, 
+        "fullName": {  $concat:  
+            [ 
+               { $toUpper: "$name.title" }, 
+                " " , 
+
+               {  $toUpper: { $substrCP:  [ "$name.first" , 0 , 1 ] } } ,
+               
+               { $substrCP:  
+                    [ 
+                    "$name.first" , 
+                    1 ,  
+                    {  $subtract: 
+                        [ 
+                            { $strLenCP:  "$name.first" }, 
+                            1 
+                        ] 
+                    }
+                    ] 
+                },
+
+                " " ,
+                "$name.last"  
+                ] 
+            }
+        } 
+    },
+
+    { $group: 
+        {
+         _id: {  birthYear:  "$tellmebirthyear" } ,
+         numPersons: { $sum: 1 } 
+        }
+    },
+
+    {$sort:  {numPersons: -1 }}
+
+]
+)
+
+
+
+
+db.persons.aggregate(
+
+[
+    { $match: { gender: 'male' } },
+
+    { $group:  
+        { 
+            _id: { mystate: "$location.state" } ,
+           totalMalePersons:  { $sum: 1 }
+        }  
+    },
+
+    { $sort: { totalMalePersons: -1  } },
+
+    { $out: { db: "outfinaldb", coll: "finalcol" } }
+    
+]
+
+)
 
 
 
