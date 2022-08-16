@@ -265,3 +265,109 @@ db.persons.aggregate(
 
 
 
+
+db.myc.aggregate([
+ { $project: 
+	{
+		_id:0 , 
+		examScores: { $slice: [ "$examScores", 1] }
+	} 
+  }
+])
+
+
+db.myc.aggregate([
+ { $project: 
+	{
+		_id:0 , 
+		numScores: { $size: "$examScores"}
+	} 
+  }
+])
+
+db.myc.aggregate([ { $project: { _id: 0, numScores: { $size: "$hobbies" } } }])
+
+
+
+
+db.myc.aggregate([
+
+ {  $unwind: "$hobbies" },
+
+
+{ 
+	$group: 
+	{
+		_id: { age: "$age"},
+		totalh: { $addToSet: "$hobbies" }
+	}
+ }
+
+])
+
+
+
+
+db.myc.aggregate([
+
+ {  $unwind: "$hobbies" },
+
+
+{ 
+	$group: 
+	{
+		_id: { age: "$age"},
+		totalh: { $push: "$hobbies" }
+	}
+ }
+
+])
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+db.myc.aggregate([
+
+ {  $unwind: "$hobbies" },
+
+
+{ 
+	$group: 
+	{
+		_id: { myh: "$hobbies"},
+		totalh: { $sum: 1 }
+	}
+ }
+
+])
+
+
+
+
+
+
+
+ { 
+	$group: 
+	{
+		_id: { myage: "$age"},
+		x: { $sum: 1 }
+	}
+ }
+
+
+
+
